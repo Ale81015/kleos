@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Te invitan a Kleos</title>
+<meta name="description" content="Únete a Kleos y guarda todo lo que vives.">
+<meta property="og:title" content="Te invitan a Kleos">
+<meta property="og:description" content="Ábrelo para ver su perfil y seguirse en Kleos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --fondo:#0F1E33; --superficie:#172A44; --texto:#EEF1FA; --tenue:#9AA6BD; --acento:#EEF1FA; --sobre:#0F1E33; --chispa:#7CC8FF; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; background:var(--fondo); color:var(--texto);
+         font-family:Manrope, system-ui, sans-serif; display:flex; align-items:center; justify-content:center; padding:24px 16px; }
+  main { width:100%; max-width:380px; text-align:center; }
+  img { height:40px; margin-bottom:40px; }
+  h1 { font-family:"Funnel Display", Manrope, sans-serif; font-weight:600; font-size:30px; line-height:1.15; margin:0 0 10px; }
+  .usuario { color:var(--chispa); }
+  p { color:var(--tenue); font-size:15px; line-height:1.5; margin:0 0 28px; }
+  a.boton { display:block; background:var(--acento); color:var(--sobre); text-decoration:none; font-weight:700;
+            font-size:16px; padding:15px; border-radius:14px; }
+  .nota { margin-top:28px; background:var(--superficie); border-radius:16px; padding:16px; font-size:13.5px; color:var(--tenue); line-height:1.5; }
+</style>
+</head>
+<body>
+<main>
+  <img src="logo.svg" alt="Kleos">
+  <h1 id="titulo">Te invitan a Kleos</h1>
+  <p id="texto">Guarda lo que vives, rasca tu mapa y colecciona medallas con tus amigos.</p>
+  <a class="boton" id="abrir" href="kleos://u/">Abrir en Kleos</a>
+  <div class="nota" id="nota">¿Aún no tienes Kleos? Pídele a quien te invitó que te comparta la app. Después vuelve a tocar este link.</div>
+</main>
+<script>
+  // Solo se acepta un @usuario válido; se escribe con textContent.
+  var u = (new URLSearchParams(location.search).get('u') || '').toLowerCase().replace('@', '');
+  if (/^[a-z0-9_.]{3,20}$/.test(u)) {
+    var enlace = 'kleos://u/' + u;
+    document.getElementById('abrir').href = enlace;
+    var t = document.getElementById('titulo');
+    t.textContent = '';
+    var s = document.createElement('span');
+    s.className = 'usuario';
+    s.textContent = '@' + u;
+    t.append(s, ' te invita a Kleos');
+    document.getElementById('texto').textContent = 'Ábrelo en la app para ver su perfil y seguirse.';
+    // Intenta abrir la app de una vez; si no está instalada, queda la página
+    setTimeout(function () { location.href = enlace; }, 300);
+  } else {
+    document.getElementById('abrir').href = 'kleos://';
+  }
+</script>
+</body>
+</html>
